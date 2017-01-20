@@ -1,0 +1,37 @@
+group 'com.frogermcs'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'com.google.cloud.tools.appengine'
+
+compileJava {
+    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_7
+}
+
+repositories {
+    maven {
+        url 'https://maven-central.storage.googleapis.com'
+    }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    providedCompile 'javax.servlet:servlet-api:2.5'
+    compile project(':google-actions-java-sdk')
+    compile 'com.google.appengine:appengine:+'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+appengine {
+    run {
+        port = 8080
+    }
+
+    deploy {
+        stopPreviousVersion = true
+        promote = true
+    }
+}

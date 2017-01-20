@@ -1,0 +1,28 @@
+group 'com.frogermcs'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+compileJava {
+    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_7
+}
+
+repositories {
+    maven {
+        url 'https://maven-central.storage.googleapis.com'
+    }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.code.findbugs:jsr305:3.0.1'
+    compile 'com.google.code.gson:gson:2.8.0'
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-core:1.+'
+    testCompile 'org.hamcrest:hamcrest-core:1.3'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'org.hamcrest:hamcrest-integration:1.3'
+}
