@@ -17,7 +17,7 @@ Example projects showing how Assistant Actions SDK can be used in AppEngine Java
 
 ## How to work with limited SDK
 
-Even if it's very early stage project and there is not much utils in it, whole communication with Google Actions is based on proper responses. So even if you find any limitations you can always build `RootResponse` object by hand which in a moment of writing this is fully compatible with [Conversational Protocol](https://developers.google.com/actions/reference/conversation). Same with `RootRequest` - object should reflect all data which Google Actions send to us.
+Even if it's very early stage project and there is not much utils in it, entire communication with Google Actions is based on proper responses. So even if you find any limitations you can always build `RootResponse` object by hand which in a moment of writing this is fully compatible with [Conversational Protocol](https://developers.google.com/actions/reference/conversation). Same with `RootRequest` - object should reflect all data which Google Actions send to us.
 
 ## Code
 
@@ -28,6 +28,7 @@ AssistantActions assistantActions =
         new AssistantActions.Builder(new AppEngineResponseHandler(response))
                 .addRequestHandlerFactory(StandardIntents.MAIN, new MainRequestHandlerFactory())
                 .addRequestHandlerFactory(StandardIntents.TEXT, new TextRequestHandlerFactory())
+                .addRequestHandlerFactory(StandardIntents.PERMISSION, new MyPermissionRequestHandlerFactory())
                 .build();
 
 assistantActions.handleRequest(request);
@@ -52,6 +53,7 @@ public class ActionsServlet extends HttpServlet {
                 new AssistantActions.Builder(new AppEngineResponseHandler(response))
                         .addRequestHandlerFactory(StandardIntents.MAIN, new MainRequestHandlerFactory())
                         .addRequestHandlerFactory(StandardIntents.TEXT, new TextRequestHandlerFactory())
+                        .addRequestHandlerFactory(StandardIntents.PERMISSION, new MyPermissionRequestHandlerFactory())
                         .build();
 
         assistantActions.handleRequest(parseActionRequest(request));
@@ -61,7 +63,7 @@ public class ActionsServlet extends HttpServlet {
 }
 ```
 
-`AppEngineResponseHandler` - implementation or `ResponseHandler`. Method `onResponse()` is passing back prepared response to HttpServletResponse.
+`AppEngineResponseHandler` - implementation or `ResponseHandler`. Method `onResponse(RootResponse rootResponse)` passes back prepared response to HttpServletResponse.
 
 ```java
 public class AppEngineResponseHandler implements ResponseHandler {
@@ -87,13 +89,58 @@ public class AppEngineResponseHandler implements ResponseHandler {
 
 ```
 
-`MainRequestHandler` - In response to initial Intent `assistant.intent.action.MAIN` we are asking user to tell something.
+`MainRequestHandler` - In response to initial Intent `assistant.intent.action.MAIN` we are asking user for NAME permission.
  
 ```java
-public class MainRequestHandler implements RequestHandler {
+public class MainRequestHandler extends RequestHandler {
+    MainRequestHandler(RootRequest rootRequest) {
+        super(rootRequest);
+    }
+
     @Override
-    public RootResponse onRequest(RootRequest rootRequest) {
-        return ResponseBuilder.askResponse("Hey, it works! Now tell something so I could repeat it.");
+    public RootResponse getResponse() {
+        return ResponseBuilder.askForPermissionResponse("See how permissions work",
+                SupportedPermissions.NAME);
+    }
+}
+```
+
+`MyPermissionRequestHandler` - whether permission is granted or not, we asking user to tell us something so we'll be able to repeat this response.
+
+```java
+public class MyPermissionRequestHandler extends PermissionRequestHandler {
+
+    MyPermissionRequestHandler(RootRequest rootRequest) {
+        super(rootRequest);
+    }
+
+    @Override
+    public RootResponse getResponse() {
+        UserProfile userProfile = getUserProfile();
+        if (isPermissionGranted() && userProfile != null) {
+            return ResponseBuilder.askResponse("Hey " + userProfile.given_name + ". It's nice to meet you!" +
+                    "Now tell me something so I could repeat it.");
+
+        } else {
+            return ResponseBuilder.askResponse("Hey. I don't know your name, but it's ok. :)" +
+                    "Now tell me something so I could repeat it.");
+        }
+    }
+}
+```
+
+`TextRequestHandler` - finally we're replying what user's just said. 
+
+```java
+public class TextRequestHandler extends RequestHandler {
+
+    TextRequestHandler(RootRequest rootRequest) {
+        super(rootRequest);
+    }
+
+    @Override
+    public RootResponse getResponse() {
+        return ResponseBuilder.tellResponse("You've just said: " + getRootRequest().inputs.get(0).raw_inputs.get(0).query);
     }
 }
 ```
@@ -126,8 +173,6 @@ Just visit [Web Simulator](https://developers.google.com/actions/tools/web-simul
 This is very general list of things planned to do to make this project as useful as possible. Your commitment is highly appreciated!
 
 - Better project structure, code cleanup and style rules
-- Javadoc 
-- Ask for permission feature
 - Add ssml support to responses
 - API.AI support (based on official SDK)
 - Keep conversation context 
