@@ -14,13 +14,16 @@ repositories {
     maven {
         url 'https://maven-central.storage.googleapis.com'
     }
+    maven { url 'https://dl.bintray.com/frogermcs/maven/' }
+
     mavenCentral()
     jcenter()
 }
 
 dependencies {
     providedCompile 'javax.servlet:servlet-api:2.5'
-    compile project(':google-actions-java-sdk')
+//    compile project(':gactions')
+    compile 'com.frogermcs.gactions:gactions:0.1.1'
     compile 'com.google.appengine:appengine:+'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

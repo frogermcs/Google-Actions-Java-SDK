@@ -19,11 +19,11 @@ public class MyPermissionRequestHandler extends PermissionRequestHandler {
     public RootResponse getResponse() {
         UserProfile userProfile = getUserProfile();
         if (isPermissionGranted() && userProfile != null) {
-            return ResponseBuilder.askResponse("Hey " + userProfile.given_name + ". It's nice to meet you!" +
+            return ResponseBuilder.askResponse("Hey " + userProfile.given_name + ". It's nice to meet you! " +
                     "Now tell me something so I could repeat it.");
 
         } else {
-            return ResponseBuilder.askResponse("Hey. I don't know your name, but it's ok. :)" +
+            return ResponseBuilder.askResponse("Hey. I don't know your name, but it's ok. :) " +
                     "Now tell me something so I could repeat it.");
         }
     }
