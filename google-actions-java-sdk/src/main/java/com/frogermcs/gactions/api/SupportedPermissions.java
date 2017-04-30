@@ -1,7 +1,7 @@
 package com.frogermcs.gactions.api;
 
 /**
- * Created by froger_mcs on 17/01/2017.
+ * Permissions supported by Google Assistant API
  */
 public enum SupportedPermissions {
     /**

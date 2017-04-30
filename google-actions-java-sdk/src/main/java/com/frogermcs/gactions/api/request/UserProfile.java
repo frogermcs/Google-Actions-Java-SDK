@@ -15,7 +15,8 @@ public class UserProfile {
 
         UserProfile userProfile = (UserProfile) o;
 
-        if (given_name != null ? !given_name.equals(userProfile.given_name) : userProfile.given_name != null) return false;
+        if (given_name != null ? !given_name.equals(userProfile.given_name) : userProfile.given_name != null)
+            return false;
         if (family_name != null ? !family_name.equals(userProfile.family_name) : userProfile.family_name != null)
             return false;
         return display_name != null ? display_name.equals(userProfile.display_name) : userProfile.display_name == null;

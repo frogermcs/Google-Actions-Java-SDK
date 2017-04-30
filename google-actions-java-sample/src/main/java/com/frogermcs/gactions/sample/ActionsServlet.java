@@ -32,6 +32,7 @@ public class ActionsServlet extends HttpServlet {
                 new AssistantActions.Builder(new AppEngineResponseHandler(response))
                         .addRequestHandlerFactory(StandardIntents.MAIN, new MainRequestHandlerFactory())
                         .addRequestHandlerFactory(StandardIntents.TEXT, new TextRequestHandlerFactory())
+                        .addRequestHandlerFactory(StandardIntents.PERMISSION, new MyPermissionRequestHandlerFactory())
                         .build();
 
         assistantActions.handleRequest(parseActionRequest(request));
@@ -39,6 +40,8 @@ public class ActionsServlet extends HttpServlet {
 
     private RootRequest parseActionRequest(HttpServletRequest request) throws IOException {
         JsonReader jsonReader = new JsonReader(request.getReader());
-        return new Gson().fromJson(jsonReader, RootRequest.class);
+        RootRequest rootRequest = new Gson().fromJson(jsonReader, RootRequest.class);
+        log.info("REQUEST:" + rootRequest);
+        return rootRequest;
     }
 }

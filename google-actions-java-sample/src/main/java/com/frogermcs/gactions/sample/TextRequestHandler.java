@@ -8,9 +8,14 @@ import com.frogermcs.gactions.api.response.RootResponse;
 /**
  * Created by froger_mcs on 19/01/2017.
  */
-public class TextRequestHandler implements RequestHandler {
+public class TextRequestHandler extends RequestHandler {
+
+    TextRequestHandler(RootRequest rootRequest) {
+        super(rootRequest);
+    }
+
     @Override
-    public RootResponse onRequest(RootRequest rootRequest) {
-        return ResponseBuilder.tellResponse("You just told: " + rootRequest.inputs.get(0).raw_inputs.get(0).query);
+    public RootResponse getResponse() {
+        return ResponseBuilder.tellResponse("You've just said: " + getRootRequest().inputs.get(0).raw_inputs.get(0).query);
     }
 }

@@ -2,6 +2,7 @@ package com.frogermcs.gactions;
 
 import com.frogermcs.gactions.api.ActionsConfig;
 import com.frogermcs.gactions.api.RequestHandler;
+import com.frogermcs.gactions.api.request.Inputs;
 import com.frogermcs.gactions.api.request.RootRequest;
 import com.frogermcs.gactions.api.response.RootResponse;
 import org.junit.After;
@@ -10,11 +11,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by froger_mcs on 20/01/2017.
@@ -56,6 +58,33 @@ public class AssistantActionsTest {
 
         assistantActions.handleRequest(rootRequest);
 
-        verify(responseHandlerMock).onResponse(eq(expectedResponse));
+        verify(responseHandlerMock).onResponse(expectedResponse);
+    }
+
+    @Test
+    public void testResponse_whenHandlerForResponseExist_thenItShouldGenerateResponse() throws Exception {
+        RootResponse expectedResponse = ResponseBuilder.tellResponse("lorem ipsum");
+        String expectedIntent = "INTENT";
+
+        RequestHandler.Factory requestHandlerFactory = mock(RequestHandler.Factory.class);
+        RequestHandler requestHandler = mock(RequestHandler.class);
+
+        assistantActions = new AssistantActions.Builder(responseHandlerMock)
+                .addRequestHandlerFactory(expectedIntent, requestHandlerFactory)
+                .build();
+
+        RootRequest expectedRootRequest = new RootRequest();
+        expectedRootRequest.inputs = new ArrayList<>();
+        Inputs input = new Inputs();
+        input.intent = expectedIntent;
+        expectedRootRequest.inputs.add(input);
+
+        when(requestHandlerFactory.create(expectedRootRequest)).thenReturn(requestHandler);
+        when(requestHandler.getResponse()).thenReturn(expectedResponse);
+
+        assistantActions.handleRequest(expectedRootRequest);
+
+        verify(requestHandler).getResponse();
+        verify(responseHandlerMock).onResponse(expectedResponse);
     }
 }
