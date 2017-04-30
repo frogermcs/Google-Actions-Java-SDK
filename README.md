@@ -19,6 +19,20 @@ Example projects showing how Assistant Actions SDK can be used in AppEngine Java
 
 Even if it's very early stage project and there is not much utils in it, entire communication with Google Actions is based on proper responses. So even if you find any limitations you can always build `RootResponse` object by hand which in a moment of writing this is fully compatible with [Conversational Protocol](https://developers.google.com/actions/reference/conversation). Same with `RootRequest` - object should reflect all data which Google Actions send to us.
 
+## Download
+
+Library can be downloaded from jCenter:
+
+```gradle
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.frogermcs.gactions:gactions:0.1.1'
+}
+```
+
 ## Code
 
 Here is example code showing how to use Google Actions Java SDK
