@@ -4,7 +4,7 @@ package com.frogermcs.gactions.api.request;
  * Created by froger_mcs on 17/01/2017.
  */
 public class Conversation {
-    public String conversation_id;
+    public String conversationId;
     public ConversationType type;
     public String conversation_token;
 
@@ -15,7 +15,7 @@ public class Conversation {
 
         Conversation that = (Conversation) o;
 
-        if (conversation_id != null ? !conversation_id.equals(that.conversation_id) : that.conversation_id != null)
+        if (conversationId != null ? !conversationId.equals(that.conversationId) : that.conversationId != null)
             return false;
         if (type != that.type) return false;
         return conversation_token != null ? conversation_token.equals(that.conversation_token) : that.conversation_token == null;
@@ -23,7 +23,7 @@ public class Conversation {
 
     @Override
     public int hashCode() {
-        int result = conversation_id != null ? conversation_id.hashCode() : 0;
+        int result = conversationId != null ? conversationId.hashCode() : 0;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (conversation_token != null ? conversation_token.hashCode() : 0);
         return result;
@@ -32,7 +32,7 @@ public class Conversation {
     @Override
     public String toString() {
         return "Conversation{" +
-                "conversation_id='" + conversation_id + '\'' +
+                "conversationId='" + conversationId + '\'' +
                 ", type=" + type +
                 ", conversation_token='" + conversation_token + '\'' +
                 '}';
