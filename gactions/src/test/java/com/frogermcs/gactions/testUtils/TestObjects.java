@@ -29,7 +29,7 @@ public class TestObjects {
         RootRequest rootRequest = permissionGrantedRequest(granted);
 
         rootRequest.user = new User();
-        rootRequest.user.user_id = "abc123";
+        rootRequest.user.userId = "abc123";
         rootRequest.user.profile = new UserProfile();
         rootRequest.user.profile.given_name = "Name";
         rootRequest.user.profile.family_name = "LastName";
