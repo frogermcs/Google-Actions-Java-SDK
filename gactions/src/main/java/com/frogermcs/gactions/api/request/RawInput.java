@@ -6,7 +6,7 @@ package com.frogermcs.gactions.api.request;
 public class RawInput {
     public Time create_time;
     public String query;
-    public InputType input_type;
+    public InputType inputType;
 
     @Override
     public boolean equals(Object o) {
@@ -18,14 +18,14 @@ public class RawInput {
         if (create_time != null ? !create_time.equals(rawInput.create_time) : rawInput.create_time != null)
             return false;
         if (query != null ? !query.equals(rawInput.query) : rawInput.query != null) return false;
-        return input_type == rawInput.input_type;
+        return inputType == rawInput.inputType;
     }
 
     @Override
     public int hashCode() {
         int result = create_time != null ? create_time.hashCode() : 0;
         result = 31 * result + (query != null ? query.hashCode() : 0);
-        result = 31 * result + (input_type != null ? input_type.hashCode() : 0);
+        result = 31 * result + (inputType != null ? inputType.hashCode() : 0);
         return result;
     }
 
@@ -34,7 +34,7 @@ public class RawInput {
         return "RawInput{" +
                 "create_time=" + create_time +
                 ", query='" + query + '\'' +
-                ", input_type=" + input_type +
+                ", inputType=" + inputType +
                 '}';
     }
 }
