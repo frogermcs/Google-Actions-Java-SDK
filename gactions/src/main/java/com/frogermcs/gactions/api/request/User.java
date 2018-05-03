@@ -1,5 +1,6 @@
 package com.frogermcs.gactions.api.request;
 
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -10,6 +11,7 @@ public class User {
     public UserProfile profile;
     public String access_token;
     public Locale locale;
+    public Date lastSeen;
 
     @Override
     public boolean equals(Object o) {
