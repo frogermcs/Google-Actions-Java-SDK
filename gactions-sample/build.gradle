@@ -6,8 +6,8 @@ apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine'
 
 compileJava {
-    targetCompatibility = JavaVersion.VERSION_1_7
-    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
 repositories {
@@ -23,7 +23,7 @@ repositories {
 dependencies {
     providedCompile 'javax.servlet:servlet-api:2.5'
 //    compile project(':gactions')
-    compile 'com.frogermcs.gactions:gactions:0.1.1'
+    compile 'com.frogermcs.gactions:gactions:0.2.0'
     compile 'com.google.appengine:appengine:+'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
