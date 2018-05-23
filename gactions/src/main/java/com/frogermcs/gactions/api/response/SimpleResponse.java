@@ -5,8 +5,8 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
-public class InputValueSpec {
-    public PermissionValueSpec permission_value_spec;
+@NoArgsConstructor
+public class SimpleResponse {
+    public SpeechResponse simpleResponse;
 }
