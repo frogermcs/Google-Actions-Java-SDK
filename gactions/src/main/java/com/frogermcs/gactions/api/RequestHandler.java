@@ -26,7 +26,7 @@ public abstract class RequestHandler {
      * @return UserId from Google Actions API request
      */
     public String getUserId() {
-        return rootRequest.user.user_id;
+        return rootRequest.user.userId;
     }
 
     /**

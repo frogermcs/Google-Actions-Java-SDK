@@ -4,15 +4,12 @@ import lombok.*;
 
 import java.util.List;
 
-/**
- * Created by froger_mcs on 17/01/2017.
- */
 @Builder
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExpectedInputs {
-    public InputPrompt inputPrompt;
-    public List<ExpectedIntent> possibleIntents;
+public class RichInitialPrompt {
+    public List<RichInitialPromptItems> items;
+    public List<SuggestionResponse> suggestions;
 }

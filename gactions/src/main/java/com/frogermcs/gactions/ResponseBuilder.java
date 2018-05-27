@@ -12,33 +12,58 @@ import java.util.*;
  */
 public class ResponseBuilder {
 
-    /**
-     * @param message - speech response for Google Actions request
-     * @return {@link RootResponse} object that contains speech response for Google Actions request
-     */
     public static RootResponse tellResponse(String message) {
+        return ResponseBuilder.tellResponse(SpeechResponse.builder().textToSpeech(message).displayText(message).build());
+    }
+
+    public static RootResponse tellResponse(SpeechResponse message) {
         RootResponse rootResponse = new RootResponse();
-        rootResponse.expect_user_response = false;
-        rootResponse.final_response = new FinalResponse();
-        rootResponse.final_response.speech_response = new SpeechResponse(message, null);
+        rootResponse.expectUserResponse = false;
+        rootResponse.finalResponse = new FinalResponse();
+        rootResponse.finalResponse.speechResponse = message;
         return rootResponse;
     }
 
-    /**
-     * @param message - speech response for Google Actions request
-     * @return {@link RootResponse} object that uses speech response to ask user for additional data
-     */
     public static RootResponse askResponse(String message) {
+        return ResponseBuilder.askResponse(SpeechResponse.builder().textToSpeech(message).displayText(message).build());
+    }
+
+    public static RootResponse askResponse(SpeechResponse message) {
         return askResponse(message, null, null);
     }
 
-    /**
-     * @param message        - speech response for Google Actions request
-     * @param noInputPrompts
-     * @return {@link RootResponse} object that uses speech response to ask user for additional data
-     */
     public static RootResponse askResponse(String message, String[] noInputPrompts) {
         return askResponse(message, null, noInputPrompts);
+    }
+
+    public static RootResponse askResponseWithRichInput(SpeechResponse message) {
+        return askResponseWithRichInput(message, null, null, null);
+    }
+
+    public static RootResponse askResponseWithRichInput(SpeechResponse message, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions ) {
+        RootResponse rootResponse = new RootResponse();
+        rootResponse.expectUserResponse = true;
+        rootResponse.conversationToken = conversationToken;
+        rootResponse.expectedInputs = new ArrayList<>();
+
+        ExpectedInputs expectedInput = new ExpectedInputs();
+        expectedInput.inputPrompt = new InputPrompt();
+
+        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
+
+        RichInitialPrompt richInitialPrompt = RichInitialPrompt.builder().items(Collections.singletonList(richInitialPromptItems)).suggestions(suggestions).build();
+
+        expectedInput.inputPrompt.richInitialPrompt = richInitialPrompt;
+
+        if (noInputPrompts != null && noInputPrompts.size() > 0) {
+            expectedInput.inputPrompt.noInputPrompts = noInputPrompts;
+        }
+
+        expectedInput.possibleIntents = new ArrayList<>();
+        expectedInput.possibleIntents.add(new ExpectedIntent(StandardIntents.TEXT));
+
+        rootResponse.expectedInputs.add(expectedInput);
+        return rootResponse;
     }
 
     /**
@@ -47,29 +72,37 @@ public class ResponseBuilder {
      * @param noInputPrompts
      * @return {@link RootResponse} object that uses speech response to ask user for additional data
      */
-    public static RootResponse askResponse(String message, String conversationToken, String[] noInputPrompts) {
+    public static RootResponse askResponse(SpeechResponse message, String conversationToken, List<SpeechResponse> noInputPrompts ) {
         RootResponse rootResponse = new RootResponse();
-        rootResponse.expect_user_response = true;
-        rootResponse.conversation_token = conversationToken;
-        rootResponse.expected_inputs = new ArrayList<>();
+        rootResponse.expectUserResponse = true;
+        rootResponse.conversationToken = conversationToken;
+        rootResponse.expectedInputs = new ArrayList<>();
 
         ExpectedInputs expectedInput = new ExpectedInputs();
-        expectedInput.input_prompt = new InputPrompt();
-        expectedInput.input_prompt.initial_prompts = Collections.singletonList(new SpeechResponse(message, null));
+        expectedInput.inputPrompt = new InputPrompt();
+        expectedInput.inputPrompt.initialPrompts = Collections.singletonList(message);
 
-        if (noInputPrompts != null && noInputPrompts.length > 0) {
-            expectedInput.input_prompt.no_input_prompts = new ArrayList<>();
-            for (String noInputPrompt : noInputPrompts) {
-                expectedInput.input_prompt.no_input_prompts.add(new SpeechResponse(noInputPrompt, null));
-            }
-
+        if (noInputPrompts != null && noInputPrompts.size() > 0) {
+            expectedInput.inputPrompt.noInputPrompts = noInputPrompts;
         }
 
-        expectedInput.possible_intents = new ArrayList<>();
-        expectedInput.possible_intents.add(new ExpectedIntent(StandardIntents.TEXT));
+        expectedInput.possibleIntents = new ArrayList<>();
+        expectedInput.possibleIntents.add(new ExpectedIntent(StandardIntents.TEXT));
 
-        rootResponse.expected_inputs.add(expectedInput);
+        rootResponse.expectedInputs.add(expectedInput);
         return rootResponse;
+    }
+
+    public static RootResponse askResponse(String message, String conversationToken, String[] noInputPrompts) {
+        List<SpeechResponse> noInputPromptsConverted = null;
+        if (noInputPrompts != null && noInputPrompts.length > 0) {
+            List<SpeechResponse> result = new ArrayList<>();
+            for(String noInputPrompt : noInputPrompts) {
+                noInputPromptsConverted.add(SpeechResponse.builder().textToSpeech(noInputPrompt).displayText(noInputPrompt).build());
+            }
+        }
+
+        return ResponseBuilder.askResponse(SpeechResponse.builder().textToSpeech(message).displayText(message).build(), conversationToken, noInputPromptsConverted);
     }
 
     /**
@@ -130,24 +163,24 @@ public class ResponseBuilder {
         }
 
         RootResponse rootResponse = new RootResponse();
-        rootResponse.expect_user_response = true;
+        rootResponse.expectUserResponse = true;
 
         PermissionValueSpec permissionValueSpec = new PermissionValueSpec();
-        permissionValueSpec.opt_context = permissionContext;
+        permissionValueSpec.optContext = permissionContext;
         permissionValueSpec.permissions = new ArrayList<>(permissions);
 
         InputValueSpec inputValueSpec = new InputValueSpec();
         inputValueSpec.permission_value_spec = permissionValueSpec;
 
         ExpectedIntent expectedIntent = new ExpectedIntent(StandardIntents.PERMISSION);
-        expectedIntent.input_value_spec = inputValueSpec;
+        expectedIntent.inputValueSpec = inputValueSpec;
 
         ExpectedInputs expectedInput = new ExpectedInputs();
-        expectedInput.possible_intents = new ArrayList<>();
-        expectedInput.possible_intents.add(expectedIntent);
+        expectedInput.possibleIntents = new ArrayList<>();
+        expectedInput.possibleIntents.add(expectedIntent);
 
-        rootResponse.expected_inputs = new ArrayList<>();
-        rootResponse.expected_inputs.add(expectedInput);
+        rootResponse.expectedInputs = new ArrayList<>();
+        rootResponse.expectedInputs.add(expectedInput);
 
         return rootResponse;
     }

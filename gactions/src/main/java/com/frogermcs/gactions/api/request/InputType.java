@@ -5,6 +5,7 @@ package com.frogermcs.gactions.api.request;
  */
 public enum InputType {
     UNSPECIFIC_INPUT_TYPE,
+    KEYBOARD,
     TOUCH,
     VOICE
 }

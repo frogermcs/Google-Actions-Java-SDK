@@ -23,15 +23,15 @@ public class ResponseBuilderTest {
     public void testShouldBuildTellResponse() throws Exception {
         String expectedSpeech = "expected_speech";
         RootResponse rootResponse = ResponseBuilder.tellResponse(expectedSpeech);
-        assertEquals(expectedSpeech, rootResponse.final_response.speech_response.text_to_speech);
+        assertEquals(expectedSpeech, rootResponse.finalResponse.speechResponse.textToSpeech);
     }
 
     @Test
     public void testShouldBuildAskResponse() throws Exception {
         String expectedPrompt = "expected_prompt";
         RootResponse rootResponse = ResponseBuilder.askResponse(expectedPrompt);
-        assertEquals(true, rootResponse.expect_user_response);
-        assertEquals(expectedPrompt, rootResponse.expected_inputs.get(0).input_prompt.initial_prompts.get(0).text_to_speech);
+        assertEquals(true, rootResponse.expectUserResponse);
+        assertEquals(expectedPrompt, rootResponse.expectedInputs.get(0).inputPrompt.initialPrompts.get(0).textToSpeech);
     }
 
     @Test(expected = IllegalArgumentException.class)

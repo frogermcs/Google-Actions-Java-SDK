@@ -154,7 +154,7 @@ public class TextRequestHandler extends RequestHandler {
 
     @Override
     public RootResponse getResponse() {
-        return ResponseBuilder.tellResponse("You've just said: " + getRootRequest().inputs.get(0).raw_inputs.get(0).query);
+        return ResponseBuilder.tellResponse("You've just said: " + getRootRequest().inputs.get(0).rawInputs.get(0).query);
     }
 }
 ```
