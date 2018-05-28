@@ -65,3 +65,4 @@ appengine-generated/
 # Gradle files
 .gradle/
 build/
+.idea
