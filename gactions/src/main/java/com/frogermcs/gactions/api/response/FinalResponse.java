@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FinalResponse {
+    public RichInitialPrompt richResponse;
     public SpeechResponse speechResponse;
 }

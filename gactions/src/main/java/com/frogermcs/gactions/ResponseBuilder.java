@@ -24,6 +24,24 @@ public class ResponseBuilder {
         return rootResponse;
     }
 
+    public static RootResponse tellResponseWithRichInput(SpeechResponse message) {
+        return ResponseBuilder.tellResponseWithRichInput(message, null, null);
+    }
+    public static RootResponse tellResponseWithRichInput(SpeechResponse message, String conversationToken, List<SuggestionResponse> suggestions) {
+        RootResponse rootResponse = new RootResponse();
+        rootResponse.expectUserResponse = false;
+        rootResponse.conversationToken = conversationToken;
+        rootResponse.finalResponse = new FinalResponse();
+
+        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
+
+        RichInitialPrompt richResponse = RichInitialPrompt.builder().items(Collections.singletonList(richInitialPromptItems)).suggestions(suggestions).build();
+
+        rootResponse.finalResponse.richResponse = richResponse;
+
+        return rootResponse;
+    }
+
     public static RootResponse askResponse(String message) {
         return ResponseBuilder.askResponse(SpeechResponse.builder().textToSpeech(message).displayText(message).build());
     }
