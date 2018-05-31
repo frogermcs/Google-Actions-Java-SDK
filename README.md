@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.frogermcs.gactions:gactions:0.2.0'
+    compile 'com.frogermcs.gactions:gactions:0.2.1'
 }
 ```
 
