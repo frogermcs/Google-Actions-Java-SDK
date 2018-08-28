@@ -1,6 +1,7 @@
 package com.frogermcs.gactions;
 
 import com.frogermcs.gactions.api.SupportedPermissions;
+import com.frogermcs.gactions.api.response.BasicCard;
 import com.frogermcs.gactions.api.response.RootResponse;
 import com.frogermcs.gactions.api.response.SpeechResponse;
 import com.frogermcs.gactions.api.response.SuggestionResponse;
@@ -23,9 +24,8 @@ public class ResponseBuilderTest {
 
     }
 
-
     @Test
-    public void testShouldBuildTellResponseWithRichContentAndSsml() throws Exception {
+    public void testShouldBuildTellResponseWithRichContentAndSsml_TextMessage() throws Exception {
         String expectedSsml = "<speak>Lorem <break time='200ms'/> ipsum</speak>";
         String expectedDislpayText = "Lorem ipsum";
 
@@ -42,7 +42,22 @@ public class ResponseBuilderTest {
 
 
     @Test
-    public void testShouldBuildTellResponseWithRichContentAndTextToSpeech() throws Exception {
+    public void testShouldBuildTellResponseWithRichContent_BasicCard() throws Exception {
+
+        BasicCard basicCard = BasicCard.builder().title("my title").subtitle("my subtitle").formattedText("my formatted text").build();
+        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(basicCard);
+
+        assertEquals(false, rootResponse.expectUserResponse);
+        assertNotNull("richResponse can not be null", rootResponse.finalResponse.richResponse);
+        assertNotNull("richResponse must contain an array of items not null", rootResponse.finalResponse.richResponse.items);
+        assertTrue("richResponse must contain an array of items of size equals 1", rootResponse.finalResponse.richResponse.items.size() == 1);
+        assertNotNull(rootResponse.finalResponse.richResponse.items.get(0).basicCard.title);
+        assertNotNull(rootResponse.finalResponse.richResponse.items.get(0).basicCard.subtitle);
+        assertNotNull(rootResponse.finalResponse.richResponse.items.get(0).basicCard.formattedText);
+    }
+
+    @Test
+    public void testShouldBuildTellResponseWithRichContentAndTextToSpeech_TextMessage() throws Exception {
         String expectedTextToSpeech = "Lorem ipsum text to speech";
         String expectedDislpayText = "Lorem ipsum display text";
 
@@ -58,7 +73,7 @@ public class ResponseBuilderTest {
     }
 
     @Test
-    public void testShouldBuildAskResponseWithRichInput() throws Exception {
+    public void testShouldBuildAskResponseWithRichInput_TextMessage() throws Exception {
         String expectedSsml = "<speak>Lorem <break time='200ms'/> ipsum</speak>";
         String expectedDislpayText = "Lorem ipsum";
 
@@ -72,7 +87,19 @@ public class ResponseBuilderTest {
 
 
     @Test
-    public void testShouldBuildAskResponseWithRichInput_and_options() throws Exception {
+    public void testShouldBuildAskResponseWithRichInput_BasicCard() throws Exception {
+
+        BasicCard basicCard = BasicCard.builder().title("my title").subtitle("my subtitle").formattedText("my formatted text").build();
+        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(basicCard);
+
+        assertEquals(true, rootResponse.expectUserResponse);
+        assertNotNull(rootResponse.expectedInputs.get(0).inputPrompt.richInitialPrompt.items.get(0).basicCard.title);
+        assertNotNull(rootResponse.expectedInputs.get(0).inputPrompt.richInitialPrompt.items.get(0).basicCard.subtitle);
+        assertNotNull(rootResponse.expectedInputs.get(0).inputPrompt.richInitialPrompt.items.get(0).basicCard.formattedText);
+    }
+
+    @Test
+    public void testShouldBuildAskResponseWithRichInput_TextMessage_and_options() throws Exception {
         String expectedSsml = "<speak>Lorem <break time='200ms'/> ipsum</speak>";
         String expectedDislpayText = "Lorem ipsum";
 

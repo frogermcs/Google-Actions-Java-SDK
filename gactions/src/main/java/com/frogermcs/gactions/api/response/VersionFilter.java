@@ -7,7 +7,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RichInitialPromptItems {
-    public SpeechResponse simpleResponse;
-    public BasicCard basicCard;
+public class VersionFilter {
+    public int minVersion;
+    public int maxVersion;
 }

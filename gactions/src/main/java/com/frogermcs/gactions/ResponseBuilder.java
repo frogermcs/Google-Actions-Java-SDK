@@ -28,12 +28,24 @@ public class ResponseBuilder {
         return ResponseBuilder.tellResponseWithRichInput(message, null, null);
     }
     public static RootResponse tellResponseWithRichInput(SpeechResponse message, String conversationToken, List<SuggestionResponse> suggestions) {
+        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
+        return ResponseBuilder.tellResponseWithRichInput(richInitialPromptItems, conversationToken, suggestions );
+    }
+    public static RootResponse tellResponseWithRichInput(BasicCard basicCard) {
+        return ResponseBuilder.tellResponseWithRichInput(basicCard, null, null);
+    }
+    public static RootResponse tellResponseWithRichInput(BasicCard basicCard, String conversationToken, List<SuggestionResponse> suggestions) {
+        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().basicCard(basicCard).build();
+        return ResponseBuilder.tellResponseWithRichInput(richInitialPromptItems, conversationToken, suggestions );
+    }
+    public static RootResponse tellResponseWithRichInput(RichInitialPromptItems richInitialPromptItems) {
+        return ResponseBuilder.tellResponseWithRichInput(richInitialPromptItems, null, null);
+    }
+    public static RootResponse tellResponseWithRichInput(RichInitialPromptItems richInitialPromptItems, String conversationToken, List<SuggestionResponse> suggestions) {
         RootResponse rootResponse = new RootResponse();
         rootResponse.expectUserResponse = false;
         rootResponse.conversationToken = conversationToken;
         rootResponse.finalResponse = new FinalResponse();
-
-        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
 
         RichInitialPrompt richResponse = RichInitialPrompt.builder().items(Collections.singletonList(richInitialPromptItems)).suggestions(suggestions).build();
 
@@ -41,6 +53,7 @@ public class ResponseBuilder {
 
         return rootResponse;
     }
+
 
     public static RootResponse askResponse(String message) {
         return ResponseBuilder.askResponse(SpeechResponse.builder().textToSpeech(message).displayText(message).build());
@@ -57,8 +70,22 @@ public class ResponseBuilder {
     public static RootResponse askResponseWithRichInput(SpeechResponse message) {
         return askResponseWithRichInput(message, null, null, null);
     }
-
     public static RootResponse askResponseWithRichInput(SpeechResponse message, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions ) {
+        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
+        return ResponseBuilder.askResponseWithRichInput(richInitialPromptItems, conversationToken, noInputPrompts, suggestions );
+    }
+    public static RootResponse askResponseWithRichInput(BasicCard basicCard) {
+        return askResponseWithRichInput(basicCard, null, null, null);
+    }
+    public static RootResponse askResponseWithRichInput(BasicCard basicCard, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions ) {
+        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().basicCard(basicCard).build();
+        return ResponseBuilder.askResponseWithRichInput(richInitialPromptItems, conversationToken, noInputPrompts, suggestions );
+    }
+    public static RootResponse askResponseWithRichInput(RichInitialPromptItems richInitialPromptItems) {
+        return askResponseWithRichInput(richInitialPromptItems, null, null, null);
+    }
+    public static RootResponse askResponseWithRichInput(RichInitialPromptItems richInitialPromptItems, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions ) {
+
         RootResponse rootResponse = new RootResponse();
         rootResponse.expectUserResponse = true;
         rootResponse.conversationToken = conversationToken;
@@ -66,8 +93,6 @@ public class ResponseBuilder {
 
         ExpectedInputs expectedInput = new ExpectedInputs();
         expectedInput.inputPrompt = new InputPrompt();
-
-        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
 
         RichInitialPrompt richInitialPrompt = RichInitialPrompt.builder().items(Collections.singletonList(richInitialPromptItems)).suggestions(suggestions).build();
 

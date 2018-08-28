@@ -7,7 +7,8 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RichInitialPromptItems {
-    public SpeechResponse simpleResponse;
-    public BasicCard basicCard;
+public class Button {
+
+    public String title;
+    public OpenUrlAction openUrlAction;
 }
