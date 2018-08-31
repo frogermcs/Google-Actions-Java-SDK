@@ -5,9 +5,7 @@ import com.frogermcs.gactions.api.response.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -97,7 +95,7 @@ public class ResponseBuilderTest {
 
         ResponseMetadata metadata = ResponseMetadata.builder().build();
 
-        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(Collections.singletonList(richInitialPromptItem));
+        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(Collections.singletonList(richInitialPromptItem), metadata);
 
         assertEquals(true, rootResponse.expectUserResponse);
         assertNotNull(rootResponse.expectedInputs.get(0).inputPrompt.richInitialPrompt.items.get(0).basicCard.title);
@@ -139,10 +137,23 @@ public class ResponseBuilderTest {
     }
 
     @Test
-    public void testShouldBuildTellResponse() throws Exception {
+    public void testShouldBuildTellResponse() {
         String expectedSpeech = "expected_speech";
         RootResponse rootResponse = ResponseBuilder.tellResponse(expectedSpeech);
         assertEquals(expectedSpeech, rootResponse.finalResponse.speechResponse.textToSpeech);
+    }
+
+    @Test
+    public void testShouldBuildTellResponse_RichResponse_with_simpleresponse_and_metadata() throws Exception {
+        String expectedResponse = "expected";
+
+        Map<String, Object> specs = new HashMap<>();
+        specs.put("a key", "a value");
+        ResponseMetadata metadata = ResponseMetadata.builder().status(Status.builder().message("OK").build()).specs(specs).build();
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().simpleResponse(SpeechResponse.builder().displayText(expectedResponse).build()).build();
+        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(Collections.singletonList(richInitialPromptItem), metadata);
+
+        assertEquals(expectedResponse, rootResponse.finalResponse.richResponse.items.get(0).simpleResponse.displayText);
     }
 
     @Test
