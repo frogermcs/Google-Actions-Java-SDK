@@ -1,10 +1,7 @@
 package com.frogermcs.gactions;
 
 import com.frogermcs.gactions.api.SupportedPermissions;
-import com.frogermcs.gactions.api.response.BasicCard;
-import com.frogermcs.gactions.api.response.RootResponse;
-import com.frogermcs.gactions.api.response.SpeechResponse;
-import com.frogermcs.gactions.api.response.SuggestionResponse;
+import com.frogermcs.gactions.api.response.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +27,8 @@ public class ResponseBuilderTest {
         String expectedDislpayText = "Lorem ipsum";
 
         SpeechResponse speechResponse = SpeechResponse.builder().ssml(expectedSsml).displayText(expectedDislpayText).build();
-        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(speechResponse);
+        ResponseMetadata metadata = ResponseMetadata.builder().build();
+        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(speechResponse, metadata);
 
         assertEquals(false, rootResponse.expectUserResponse);
         assertNotNull("richResponse can not be null", rootResponse.finalResponse.richResponse);
@@ -45,7 +43,11 @@ public class ResponseBuilderTest {
     public void testShouldBuildTellResponseWithRichContent_BasicCard() throws Exception {
 
         BasicCard basicCard = BasicCard.builder().title("my title").subtitle("my subtitle").formattedText("my formatted text").build();
-        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(basicCard);
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().basicCard(basicCard).build();
+
+        ResponseMetadata metadata = ResponseMetadata.builder().build();
+
+        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(Collections.singletonList(richInitialPromptItem), metadata);
 
         assertEquals(false, rootResponse.expectUserResponse);
         assertNotNull("richResponse can not be null", rootResponse.finalResponse.richResponse);
@@ -61,8 +63,9 @@ public class ResponseBuilderTest {
         String expectedTextToSpeech = "Lorem ipsum text to speech";
         String expectedDislpayText = "Lorem ipsum display text";
 
+        ResponseMetadata metadata = ResponseMetadata.builder().build();
         SpeechResponse speechResponse = SpeechResponse.builder().textToSpeech(expectedTextToSpeech).displayText(expectedDislpayText).build();
-        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(speechResponse);
+        RootResponse rootResponse = ResponseBuilder.tellResponseWithRichInput(speechResponse, metadata);
 
         assertEquals(false, rootResponse.expectUserResponse);
         assertNotNull("richResponse can not be null", rootResponse.finalResponse.richResponse);
@@ -90,7 +93,11 @@ public class ResponseBuilderTest {
     public void testShouldBuildAskResponseWithRichInput_BasicCard() throws Exception {
 
         BasicCard basicCard = BasicCard.builder().title("my title").subtitle("my subtitle").formattedText("my formatted text").build();
-        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(basicCard);
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().basicCard(basicCard).build();
+
+        ResponseMetadata metadata = ResponseMetadata.builder().build();
+
+        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(Collections.singletonList(richInitialPromptItem));
 
         assertEquals(true, rootResponse.expectUserResponse);
         assertNotNull(rootResponse.expectedInputs.get(0).inputPrompt.richInitialPrompt.items.get(0).basicCard.title);
@@ -115,7 +122,9 @@ public class ResponseBuilderTest {
         suggestions.add(SuggestionResponse.builder().title("suggestion 1").build());
         suggestions.add(SuggestionResponse.builder().title("suggestion 2").build());
 
-        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(speechResponse, conversationToke, Collections.singletonList(noInputPrompt), suggestions);
+        ResponseMetadata metadata = ResponseMetadata.builder().build();
+
+        RootResponse rootResponse = ResponseBuilder.askResponseWithRichInput(speechResponse, conversationToke, Collections.singletonList(noInputPrompt), suggestions, metadata);
 
         assertEquals(true, rootResponse.expectUserResponse);
 

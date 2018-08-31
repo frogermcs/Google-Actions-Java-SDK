@@ -5,9 +5,9 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
-public class RichInitialPromptItems {
+@AllArgsConstructor
+public class RichInitialPromptItem {
     public SpeechResponse simpleResponse;
     public BasicCard basicCard;
 }

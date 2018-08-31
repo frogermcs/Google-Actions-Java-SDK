@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RichInitialPrompt {
-    public List<RichInitialPromptItems> items;
+    public List<RichInitialPromptItem> items;
     public List<SuggestionResponse> suggestions;
 }

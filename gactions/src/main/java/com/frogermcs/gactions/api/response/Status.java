@@ -7,7 +7,6 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Button {
-    public String title;
-    public OpenUrlAction openUrlAction;
+public class Status {
+    public String message;
 }

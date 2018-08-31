@@ -17,4 +17,5 @@ public class RootResponse {
     public boolean expectUserResponse;
     public List<ExpectedInputs> expectedInputs;
     public FinalResponse finalResponse;
+    public ResponseMetadata responseMetadata;
 }
