@@ -36,5 +36,7 @@ appengine {
     deploy {
         stopPreviousVersion = true
         promote = true
+        projectId = 'hello'
+        version = '1.0.0'
     }
 }
