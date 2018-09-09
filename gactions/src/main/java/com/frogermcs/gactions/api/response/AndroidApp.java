@@ -9,7 +9,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RichInitialPrompt {
-    public List<RichInitialPromptItem> items;
-    public List<SuggestionResponse> suggestions;
+public class AndroidApp {
+    public String packageName;
+    public List<VersionFilter> versions;
 }

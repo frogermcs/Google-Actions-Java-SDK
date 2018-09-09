@@ -23,24 +23,38 @@ public class ResponseBuilder {
         rootResponse.finalResponse.speechResponse = message;
         return rootResponse;
     }
-
     public static RootResponse tellResponseWithRichInput(SpeechResponse message) {
-        return ResponseBuilder.tellResponseWithRichInput(message, null, null);
+        return ResponseBuilder.tellResponseWithRichInput(message, null, null, null);
+    }
+    public static RootResponse tellResponseWithRichInput(SpeechResponse message, ResponseMetadata metadata) {
+        return ResponseBuilder.tellResponseWithRichInput(message, null, null, metadata);
     }
     public static RootResponse tellResponseWithRichInput(SpeechResponse message, String conversationToken, List<SuggestionResponse> suggestions) {
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().simpleResponse(message).build();
+        return ResponseBuilder.tellResponseWithRichInput(Collections.singletonList(richInitialPromptItem), conversationToken, suggestions, null );
+    }
+    public static RootResponse tellResponseWithRichInput(SpeechResponse message, String conversationToken, List<SuggestionResponse> suggestions, ResponseMetadata metadata) {
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().simpleResponse(message).build();
+        return ResponseBuilder.tellResponseWithRichInput(Collections.singletonList(richInitialPromptItem), conversationToken, suggestions, metadata );
+    }
+    public static RootResponse tellResponseWithRichInput(List<RichInitialPromptItem> richInitialPromptItems, ResponseMetadata metadata) {
+        return ResponseBuilder.tellResponseWithRichInput(richInitialPromptItems, null, null, metadata);
+    }
+    public static RootResponse tellResponseWithRichInput(List<RichInitialPromptItem> richInitialPromptItems, String conversationToken, List<SuggestionResponse> suggestions, ResponseMetadata metadata) {
         RootResponse rootResponse = new RootResponse();
         rootResponse.expectUserResponse = false;
         rootResponse.conversationToken = conversationToken;
         rootResponse.finalResponse = new FinalResponse();
 
-        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
-
-        RichInitialPrompt richResponse = RichInitialPrompt.builder().items(Collections.singletonList(richInitialPromptItems)).suggestions(suggestions).build();
+        RichInitialPrompt richResponse = RichInitialPrompt.builder().items(richInitialPromptItems).suggestions(suggestions).build();
 
         rootResponse.finalResponse.richResponse = richResponse;
 
+        rootResponse.responseMetadata = metadata;
+
         return rootResponse;
     }
+
 
     public static RootResponse askResponse(String message) {
         return ResponseBuilder.askResponse(SpeechResponse.builder().textToSpeech(message).displayText(message).build());
@@ -55,10 +69,27 @@ public class ResponseBuilder {
     }
 
     public static RootResponse askResponseWithRichInput(SpeechResponse message) {
-        return askResponseWithRichInput(message, null, null, null);
+        return askResponseWithRichInput(message, null, null, null, null);
     }
+    public static RootResponse askResponseWithRichInput(SpeechResponse message, ResponseMetadata metadata) {
+        return askResponseWithRichInput(message, null, null, null, metadata);
+    }
+    public static RootResponse askResponseWithRichInput(SpeechResponse message, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions) {
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().simpleResponse(message).build();
+        return ResponseBuilder.askResponseWithRichInput(Collections.singletonList(richInitialPromptItem), conversationToken, noInputPrompts, suggestions, null);
+    }
+    public static RootResponse askResponseWithRichInput(SpeechResponse message, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions, ResponseMetadata metadata ) {
+        RichInitialPromptItem richInitialPromptItem = RichInitialPromptItem.builder().simpleResponse(message).build();
+        return ResponseBuilder.askResponseWithRichInput(Collections.singletonList(richInitialPromptItem), conversationToken, noInputPrompts, suggestions, metadata);
+    }
+    public static RootResponse askResponseWithRichInput(List<RichInitialPromptItem> richInitialPromptItems) {
+        return askResponseWithRichInput(richInitialPromptItems, null, null, null, null);
+    }
+    public static RootResponse askResponseWithRichInput(List<RichInitialPromptItem> richInitialPromptItems, ResponseMetadata metadata) {
+        return askResponseWithRichInput(richInitialPromptItems, null, null, null, metadata);
+    }
+    public static RootResponse askResponseWithRichInput(List<RichInitialPromptItem> richInitialPromptItems, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions, ResponseMetadata metadata) {
 
-    public static RootResponse askResponseWithRichInput(SpeechResponse message, String conversationToken, List<SpeechResponse> noInputPrompts, List<SuggestionResponse> suggestions ) {
         RootResponse rootResponse = new RootResponse();
         rootResponse.expectUserResponse = true;
         rootResponse.conversationToken = conversationToken;
@@ -67,9 +98,7 @@ public class ResponseBuilder {
         ExpectedInputs expectedInput = new ExpectedInputs();
         expectedInput.inputPrompt = new InputPrompt();
 
-        RichInitialPromptItems richInitialPromptItems = RichInitialPromptItems.builder().simpleResponse(message).build();
-
-        RichInitialPrompt richInitialPrompt = RichInitialPrompt.builder().items(Collections.singletonList(richInitialPromptItems)).suggestions(suggestions).build();
+        RichInitialPrompt richInitialPrompt = RichInitialPrompt.builder().items(richInitialPromptItems).suggestions(suggestions).build();
 
         expectedInput.inputPrompt.richInitialPrompt = richInitialPrompt;
 
@@ -81,6 +110,9 @@ public class ResponseBuilder {
         expectedInput.possibleIntents.add(new ExpectedIntent(StandardIntents.TEXT));
 
         rootResponse.expectedInputs.add(expectedInput);
+
+        rootResponse.responseMetadata = metadata;
+
         return rootResponse;
     }
 

@@ -7,6 +7,9 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RichInitialPromptItems {
-    public SpeechResponse simpleResponse;
+public class OpenUrlAction {
+
+    public String url;
+    public AndroidApp androidApp;
+    public UrlTypeHint urlTypeHint;
 }
