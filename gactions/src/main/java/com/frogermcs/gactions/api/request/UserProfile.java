@@ -1,7 +1,5 @@
 package com.frogermcs.gactions.api.request;
 
-import lombok.*;
-
 /**
  * Created by froger_mcs on 17/01/2017.
  */
@@ -11,7 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
-    public String given_name;
-    public String family_name;
-    public String display_name;
+    public String givenName;
+    public String familyName;
+    public String displayName;
+    public String email;
 }

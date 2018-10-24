@@ -14,7 +14,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ExpectedIntent {
     public String intent;
-    public InputValueSpec inputValueSpec;
+
+    public InputValueData inputValueData;
 
     public ExpectedIntent(String intent) {
         this.intent = intent;
