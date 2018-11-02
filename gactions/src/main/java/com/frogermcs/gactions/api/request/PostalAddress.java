@@ -1,6 +1,7 @@
 package com.frogermcs.gactions.api.request;
 
 import java.util.List;
+import lombok.*;
 
 /**
  * https://developers.google.com/actions/reference/rest/Shared.Types/PostalAddress

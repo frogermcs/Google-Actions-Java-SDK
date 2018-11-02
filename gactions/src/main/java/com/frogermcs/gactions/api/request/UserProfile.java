@@ -1,5 +1,7 @@
 package com.frogermcs.gactions.api.request;
 
+import lombok.*;
+
 /**
  * Created by froger_mcs on 17/01/2017.
  */

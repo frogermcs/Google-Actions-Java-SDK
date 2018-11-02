@@ -1,7 +1,7 @@
 package com.frogermcs.gactions.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import lombok.*;
 import java.util.List;
 
 @Builder
