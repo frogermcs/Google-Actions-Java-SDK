@@ -1,8 +1,8 @@
 package com.frogermcs.gactions.sample;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frogermcs.gactions.ResponseHandler;
 import com.frogermcs.gactions.api.response.RootResponse;
-import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,15 +13,15 @@ import java.util.Map;
  */
 public class AppEngineResponseHandler implements ResponseHandler {
     private final HttpServletResponse httpServletResponse;
-    private final Gson gson;
+    private final ObjectMapper objectMapper;
 
     public AppEngineResponseHandler(HttpServletResponse httpServletResponse) {
-        this(httpServletResponse, new Gson());
+        this(httpServletResponse, new ObjectMapper());
     }
 
-    public AppEngineResponseHandler(HttpServletResponse httpServletResponse, Gson gson) {
+    public AppEngineResponseHandler(HttpServletResponse httpServletResponse, ObjectMapper objectMapper) {
         this.httpServletResponse = httpServletResponse;
-        this.gson = gson;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -39,7 +39,8 @@ public class AppEngineResponseHandler implements ResponseHandler {
     @Override
     public void onResponse(RootResponse rootResponse) {
         try {
-            gson.toJson(rootResponse, httpServletResponse.getWriter());
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            objectMapper.writeValue(httpServletResponse.getWriter(), rootResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }

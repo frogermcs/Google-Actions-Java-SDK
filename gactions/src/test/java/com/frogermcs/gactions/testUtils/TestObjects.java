@@ -19,8 +19,8 @@ public class TestObjects {
         rootRequest.device.location.coordinates = new Coordinates();
         rootRequest.device.location.coordinates.latitude = 1.0;
         rootRequest.device.location.coordinates.longitude = 1.0;
-        rootRequest.device.location.formatted_address = "Address CityName";
-        rootRequest.device.location.zip_code = "N11RG";
+        rootRequest.device.location.formattedAddress = "Address CityName";
+        rootRequest.device.location.zipCode = "N11RG";
 
         return rootRequest;
     }
@@ -31,9 +31,9 @@ public class TestObjects {
         rootRequest.user = new User();
         rootRequest.user.userId = "abc123";
         rootRequest.user.profile = new UserProfile();
-        rootRequest.user.profile.given_name = "Name";
-        rootRequest.user.profile.family_name = "LastName";
-        rootRequest.user.profile.display_name = "Name LastName";
+        rootRequest.user.profile.givenName = "Name";
+        rootRequest.user.profile.familyName = "LastName";
+        rootRequest.user.profile.displayName = "Name LastName";
 
         return rootRequest;
     }

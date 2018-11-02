@@ -15,5 +15,9 @@ public enum SupportedPermissions {
     /**
      * City and zipcode corresponding to the location of the user's current device, as defined in the https://developers.google.com/actions/reference/conversation#Location|Location object.
      */
-    DEVICE_COARSE_LOCATION
+    DEVICE_COARSE_LOCATION,
+    /**
+     * Available in userprofile but not yet documented on https://developers.google.com
+     */
+    EMAIL
 }

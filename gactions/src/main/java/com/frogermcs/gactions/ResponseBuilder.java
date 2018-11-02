@@ -209,21 +209,16 @@ public class ResponseBuilder {
                 SupportedPermissions.valueOf(permission);
             }
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Assistant permission must be one of [NAME, DEVICE_PRECISE_LOCATION, DEVICE_COARSE_LOCATION]");
+            throw new IllegalArgumentException("Assistant permission must be one of [NAME, DEVICE_PRECISE_LOCATION, DEVICE_COARSE_LOCATION, EMAIL]");
         }
 
         RootResponse rootResponse = new RootResponse();
         rootResponse.expectUserResponse = true;
 
-        PermissionValueSpec permissionValueSpec = new PermissionValueSpec();
-        permissionValueSpec.optContext = permissionContext;
-        permissionValueSpec.permissions = new ArrayList<>(permissions);
-
-        InputValueSpec inputValueSpec = new InputValueSpec();
-        inputValueSpec.permission_value_spec = permissionValueSpec;
+        InputValueData inputValueData = new InputValueData("type.googleapis.com/google.actions.v2.PermissionValueSpec", permissionContext, new ArrayList<>(permissions));
 
         ExpectedIntent expectedIntent = new ExpectedIntent(StandardIntents.PERMISSION);
-        expectedIntent.inputValueSpec = inputValueSpec;
+        expectedIntent.inputValueData = inputValueData;
 
         ExpectedInputs expectedInput = new ExpectedInputs();
         expectedInput.possibleIntents = new ArrayList<>();

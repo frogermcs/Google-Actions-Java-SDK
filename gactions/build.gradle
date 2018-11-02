@@ -19,7 +19,8 @@ repositories {
 dependencies {
     compile 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'com.google.code.gson:gson:2.8.0'
-
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.5'
+    
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.+'
     testCompile 'org.hamcrest:hamcrest-core:1.3'
