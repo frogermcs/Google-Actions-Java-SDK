@@ -1,6 +1,8 @@
 # Deprecated
 This project is now deprecated. Google has created their Java library for Google Actions, which I recommend to use. Thanks for your support!
+
 https://medium.com/google-developers/announcing-the-java-kotlin-client-library-for-actions-on-google-217828dead
+
 https://github.com/actions-on-google/actions-on-google-java
 
 # Unofficial Google Actions Java SDK
