@@ -1,3 +1,8 @@
+# Deprecated
+This project is now deprecated. Google has created their Java library for Google Actions, which I recommend to use. Thanks for your support!
+https://medium.com/google-developers/announcing-the-java-kotlin-client-library-for-actions-on-google-217828dead
+https://github.com/actions-on-google/actions-on-google-java
+
 # Unofficial Google Actions Java SDK
 
 Official [Google Actions SDK](https://github.com/actions-on-google/actions-on-google-nodejs) is written in Node.js. But in many situations voice interfaces like Google Home or Google Assistant will extend or replace mobile apps. If you are old fashioned Android engineer and the most of your code is already written in Java, why not reuse it and build voice extension to app on your own? And this is the main reason to build Google Actions Java SDK - enabling as much developers as possible to build their brilliant ideas for Google Assistant and Home.
